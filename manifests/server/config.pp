@@ -68,6 +68,18 @@ class mysql::server::config {
       selinux_ignore_defaults => true,
     }
 
+    if $mysql::params::default_config_override != undef {
+      # Write a default my.cnf that percona expects
+      file { 'mysql-config-file-percona':
+        path                    => $mysql::params::default_config_override,
+        content                 => template('mysql/percona-my.cnf.erb'),
+        mode                    => $mysql::server::config_file_mode,
+        owner                   => $mysql::server::mycnf_owner,
+        group                   => $mysql::server::mycnf_group,
+        selinux_ignore_defaults => true,
+      }
+    }
+
     # on mariadb systems, $includedir is not defined, but /etc/my.cnf.d has
     # to be managed to place the server.cnf there
     $configparentdir = dirname($mysql::server::config_file)

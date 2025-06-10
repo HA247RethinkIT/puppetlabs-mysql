@@ -200,23 +200,41 @@ class mysql::params (
       } else {
         $provider = 'mysql'
       }
-      if $provider == 'mariadb' {
+
+      # Add some overrides for percona support
+      if $provider_override == 'percona-80' {
+        $client_package_name     = 'percona-server-client'
+        $server_package_name     = 'percona-server-server'
+        $server_service_name     = 'mysql'
+        $config_file             = '/etc/mysql/mysql.cnf'
+        $includedir              = '/etc/mysql/mysql.conf.d'
+        $default_config_override = '/etc/mysql/my.cnf'
+      } elsif $provider_override == 'percona-57' {
+        $client_package_name     = 'percona-server-client-5.7'
+        $server_package_name     = 'percona-server-server-5.7'
+        $server_service_name     = 'mysql'
+        $config_file             = '/etc/my.cnf'
+        $includedir              = '/etc/my.cnf.d'
+        $default_config_override = '/etc/mysql/my.cnf'
+      } elsif $provider == 'mariadb' {
         $client_package_name     = 'mariadb-client'
         $server_package_name     = 'mariadb-server'
         $server_service_name     = 'mariadb'
+        $config_file             = '/etc/mysql/my.cnf'
+        $includedir              = '/etc/mysql/conf.d'
         $client_dev_package_name = 'libmariadbclient-dev'
         $daemon_dev_package_name = 'libmariadbd-dev'
       } else {
         $client_package_name     = 'mysql-client'
         $server_package_name     = 'mysql-server'
         $server_service_name     = 'mysql'
+        $config_file             = '/etc/mysql/my.cnf'
+        $includedir              = '/etc/mysql/conf.d'
         $client_dev_package_name = 'libmysqlclient-dev'
         $daemon_dev_package_name = 'libmysqld-dev'
       }
 
       $basedir                 = '/usr'
-      $config_file             = '/etc/mysql/my.cnf'
-      $includedir              = '/etc/mysql/conf.d'
       $datadir                 = '/var/lib/mysql'
       $log_error               = '/var/log/mysql/error.log'
       $pidfile                 = '/var/run/mysqld/mysqld.pid'
@@ -259,21 +277,6 @@ class mysql::params (
         'bionic'           => 'ruby-mysql2',
         'focal'            => 'ruby-mysql2',
         default            => 'libmysql-ruby',
-      }
-
-      # Add some overrides for percona support
-      if $provider_override == 'percona-80' {
-        $client_package_name     = 'percona-server-client'
-        $server_package_name     = 'percona-server-server'
-        $server_service_name     = 'mysql'
-        $config_file             = '/etc/mysql/mysql.cnf'
-        $includedir              = '/etc/mysql/mysql.conf.d'
-      } elsif $provider_override == 'percona-57' {
-        $client_package_name     = 'percona-server-client-5.7'
-        $server_package_name     = 'percona-server-server-5.7'
-        $server_service_name     = 'mysql'
-        $config_file             = '/etc/my.cnf'
-        $includedir              = '/etc/my.cnf.d'
       }
     }
 
