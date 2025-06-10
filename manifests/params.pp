@@ -3,7 +3,9 @@
 #
 # @api private
 #
-class mysql::params {
+class mysql::params (
+  Optional[Enum['percona-80', 'percona-57']] $provider_override = undef,
+) {
 
   $manage_config_file     = true
   $config_file_mode       = '0644'
@@ -257,6 +259,21 @@ class mysql::params {
         'bionic'           => 'ruby-mysql2',
         'focal'            => 'ruby-mysql2',
         default            => 'libmysql-ruby',
+      }
+
+      # Add some overrides for percona support
+      if $provider_override == 'percona-80' {
+        $client_package_name     = 'percona-server-client'
+        $server_package_name     = 'percona-server-server'
+        $server_service_name     = 'mysql'
+        $config_file             = '/etc/mysql/mysql.cnf'
+        $includedir              = '/etc/mysql/mysql.conf.d'
+      } elsif $provider_override == 'percona-57' {
+        $client_package_name     = 'percona-server-client-5.7'
+        $server_package_name     = 'percona-server-server-5.7'
+        $server_service_name     = 'mysql'
+        $config_file             = '/etc/my.cnf'
+        $includedir              = '/etc/my.cnf.d'
       }
     }
 
