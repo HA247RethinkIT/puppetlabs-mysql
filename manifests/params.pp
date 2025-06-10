@@ -4,7 +4,7 @@
 # @api private
 #
 class mysql::params (
-  Optional[Enum['percona-80', 'percona-57']] $provider_override = undef,
+  Optional[Enum['percona-80']] $provider_override = undef,
 ) {
 
   $manage_config_file     = true
@@ -208,14 +208,7 @@ class mysql::params (
         $server_service_name     = 'mysql'
         $config_file             = '/etc/mysql/mysql.cnf'
         $includedir              = '/etc/mysql/mysql.conf.d'
-        $default_config_override = '/etc/mysql/my.cnf'
-      } elsif $provider_override == 'percona-57' {
-        $client_package_name     = 'percona-server-client-5.7'
-        $server_package_name     = 'percona-server-server-5.7'
-        $server_service_name     = 'mysql'
-        $config_file             = '/etc/my.cnf'
-        $includedir              = '/etc/my.cnf.d'
-        $default_config_override = '/etc/mysql/my.cnf'
+        $percona_config_override = '/etc/mysql/my.cnf'
       } elsif $provider == 'mariadb' {
         $client_package_name     = 'mariadb-client'
         $server_package_name     = 'mariadb-server'

@@ -68,10 +68,10 @@ class mysql::server::config {
       selinux_ignore_defaults => true,
     }
 
-    if $mysql::params::default_config_override != undef {
+    if $mysql::params::provider_override == 'percona-80' {
       # Write a default my.cnf that percona expects
       file { 'mysql-config-file-percona':
-        path                    => $mysql::params::default_config_override,
+        path                    => $mysql::params::percona_config_override,
         content                 => template('mysql/percona-my.cnf.erb'),
         mode                    => $mysql::server::config_file_mode,
         owner                   => $mysql::server::mycnf_owner,
