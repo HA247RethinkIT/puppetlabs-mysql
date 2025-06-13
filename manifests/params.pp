@@ -206,9 +206,10 @@ class mysql::params (
         $client_package_name     = 'percona-server-client'
         $server_package_name     = 'percona-server-server'
         $server_service_name     = 'mysql'
-        $config_file             = '/etc/mysql/mysql.cnf'
+        $config_file             = '/etc/mysql/mysql.conf.d/server.cnf'
         $includedir              = '/etc/mysql/mysql.conf.d'
-        $percona_config_override = '/etc/mysql/my.cnf'
+        $percona_config_override_mycnf = '/etc/mysql/my.cnf'
+        $percona_config_override_mysqlcnf = '/etc/mysql/mysql.cnf'
       } elsif $provider == 'mariadb' {
         $client_package_name     = 'mariadb-client'
         $server_package_name     = 'mariadb-server'

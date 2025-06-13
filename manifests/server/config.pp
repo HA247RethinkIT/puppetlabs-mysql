@@ -59,20 +59,50 @@ class mysql::server::config {
   }
 
   if $mysql::server::manage_config_file  {
-    file { 'mysql-config-file':
-      path                    => $mysql::server::config_file,
-      content                 => template('mysql/my.cnf.erb'),
-      mode                    => $mysql::server::config_file_mode,
-      owner                   => $mysql::server::mycnf_owner,
-      group                   => $mysql::server::mycnf_group,
-      selinux_ignore_defaults => true,
-    }
-
     if $mysql::params::provider_override == 'percona-80' {
-      # Write a default my.cnf that percona expects
-      file { 'mysql-config-file-percona':
-        path                    => $mysql::params::percona_config_override,
+
+      # MySQL expects directory file to exist
+      file { '/etc/mysql/conf.d':
+        ensure                  => directory,
+        mode                    => $mysql::server::config_file_mode,
+        owner                   => $mysql::server::mycnf_owner,
+        group                   => $mysql::server::mycnf_group,
+      }
+
+      # Write our new custom config to 'includedir'
+      # (config_file and includedir not directly related, if one changes the other must be changed)
+      file { 'mysql-config-file':
+        path                    => $mysql::server::config_file,
+        content                 => template('mysql/percona_custom.cnf.erb'),
+        mode                    => $mysql::server::config_file_mode,
+        owner                   => $mysql::server::mycnf_owner,
+        group                   => $mysql::server::mycnf_group,
+        selinux_ignore_defaults => true,
+      }
+
+      # Write a default my.cnf and mysql.cnf that percona expects
+      file { 'mysql-config-file-percona-mycnf':
+        path                    => $mysql::params::percona_config_override_mycnf,
         content                 => template('mysql/percona-my.cnf.erb'),
+        mode                    => $mysql::server::config_file_mode,
+        owner                   => $mysql::server::mycnf_owner,
+        group                   => $mysql::server::mycnf_group,
+        selinux_ignore_defaults => true,
+      }
+
+      file { 'mysql-config-file-percona-mysqlcnf':
+        path                    => $mysql::params::percona_config_override_mysqlcnf,
+        content                 => template('mysql/percona-my.cnf.erb'),
+        mode                    => $mysql::server::config_file_mode,
+        owner                   => $mysql::server::mycnf_owner,
+        group                   => $mysql::server::mycnf_group,
+        selinux_ignore_defaults => true,
+      }
+
+    } else {
+      file { 'mysql-config-file':
+        path                    => $mysql::server::config_file,
+        content                 => template('mysql/my.cnf.erb'),
         mode                    => $mysql::server::config_file_mode,
         owner                   => $mysql::server::mycnf_owner,
         group                   => $mysql::server::mycnf_group,
