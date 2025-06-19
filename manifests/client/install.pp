@@ -9,8 +9,8 @@ class mysql::client::install {
     if $mysql::server::package_name == 'percona-server-client' {
       class { 'apt': }
 
-      if ! defined(Apt::Source['percona-80']) {
-        apt::source { 'percona-80':
+      if ! defined(Apt::Source['percona']) {
+        apt::source { 'percona':
           location => 'http://repo.percona.com/ps-80/apt/',
           repos    => 'main',
           key      => {
@@ -42,8 +42,8 @@ class mysql::client::install {
       }
 
       # Only chain the ones that actually exist:
-      if defined(Apt::Source['percona-80']) {
-        Apt::Source['percona-80'] -> Exec['apt_update_percona']
+      if defined(Apt::Source['percona']) {
+        Apt::Source['percona'] -> Exec['apt_update_percona']
       }
       if defined(Apt::Source['percona_tools']) {
         Apt::Source['percona_tools'] -> Exec['apt_update_percona']
@@ -52,8 +52,8 @@ class mysql::client::install {
     elsif $mysql::server::package_name == 'percona-server-client-5.7' {
       class { 'apt': }
 
-      if ! defined(Apt::Source['percona-5-7']) {
-        apt::source { 'percona-5-7':
+      if ! defined(Apt::Source['percona']) {
+        apt::source { 'percona':
           location => 'http://repo.percona.com/ps-57/apt/',
           repos    => 'main',
           key      => {
@@ -85,8 +85,8 @@ class mysql::client::install {
       }
 
       # Only chain the ones that actually exist:
-      if defined(Apt::Source['percona-5-7']) {
-        Apt::Source['percona-5-7'] -> Exec['apt_update_percona']
+      if defined(Apt::Source['percona']) {
+        Apt::Source['percona'] -> Exec['apt_update_percona']
       }
       if defined(Apt::Source['percona_tools']) {
         Apt::Source['percona_tools'] -> Exec['apt_update_percona']
