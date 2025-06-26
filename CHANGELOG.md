@@ -1,5 +1,9 @@
 # Change log
 
+## [v10.6.0-percona]
+
+- Same as v10.6.0 with added percona support
+
 All notable changes to this project will be documented in this file. The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/) and this project adheres to [Semantic Versioning](http://semver.org).
 
 ## [v10.6.0](https://github.com/puppetlabs/puppetlabs-mysql/tree/v10.6.0) (2020-06-23)
