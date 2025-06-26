@@ -89,8 +89,9 @@ class mysql::server::install {
     }
 
     package { 'mysql-server':
-      name   => $mysql::server::package_name,
       ensure => $mysql::server::package_ensure,
+      install_options => $mysql::server::install_options,
+      name   => $mysql::server::package_name,
     }
   }
 }
