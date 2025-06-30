@@ -7,7 +7,7 @@ class mysql::client::install {
 
   if $mysql::client::package_manage {
     if $mysql::server::package_name == 'percona-server-client' {
-      class { 'apt': }
+      include apt
 
       if ! defined(Apt::Source['percona']) {
         apt::source { 'percona':
@@ -50,7 +50,7 @@ class mysql::client::install {
       }
     }
     elsif $mysql::server::package_name == 'percona-server-client-5.7' {
-      class { 'apt': }
+      include apt
 
       if ! defined(Apt::Source['percona']) {
         apt::source { 'percona':
