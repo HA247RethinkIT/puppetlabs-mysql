@@ -1,5 +1,9 @@
 # Change log
 
+## [v10.6.0-percona.02]
+
+- Same as v10.6.0 with added percona support
+
 ## [v10.6.0-percona]
 
 - Same as v10.6.0 with added percona support
